@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_app_bloc_dio/ci_utility.dart';
 import 'package:flutter_app_bloc_dio/managers/api_service/base/api_config.dart';
 import 'package:flutter_app_bloc_dio/managers/api_service/base/api_manager.dart';
 import 'package:flutter_app_bloc_dio/managers/api_service/base/api_result.dart';

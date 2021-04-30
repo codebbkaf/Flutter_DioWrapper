@@ -91,10 +91,10 @@ class _PhotoListView extends StatelessWidget {
               itemBuilder: (context, int index) {
                 return _photoGridItem("${state.result.response?[index].thumbnailUrl}");
               });
-        } else if (state is APIJsonPlaceHolderLoading){
+        } else if (state is APIJsonPlaceHolderLoading) {
           return buildLoadingWidget(title: "loading...");
         } else if (state is APIJsonPlaceHolderResponseFail) {
-          return customDialog(context, "${state.errorMessage}", firstItemTitle: "重新整理", firstTapAction: (){
+          return customDialog(context, "${state.errorMessage}", firstItemTitle: "重新整理", firstTapAction: () {
             BlocProvider.of<PhotoListBloc>(context).onFetchPhoto();
           });
         } else {
@@ -105,9 +105,9 @@ class _PhotoListView extends StatelessWidget {
   }
 
   Widget _photoGridItem(String? imageURL) {
-    return Center(child: 
-        Text("asd"),
-    // cacheImageView(imageURL)
-    );
+    return Container(
+        color: Colors.red,
+        constraints: BoxConstraints.expand(),
+        child:  cacheImageView(imageURL));
   }
 }
