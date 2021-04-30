@@ -22,6 +22,11 @@ class CIUtility {
     return Theme.of(context).platform == TargetPlatform.android;
   }
 
+  bool isMobile = true;
+  bool checkIsMobile(BuildContext context) {
+    isMobile = (Theme.of(context).platform == TargetPlatform.android || Theme.of(context).platform == TargetPlatform.iOS);
+    return isMobile;
+  }
   isPhoneX(BuildContext parrentContext) {
     bool isIOS = Theme.of(parrentContext).platform == TargetPlatform.iOS;
     if (isIOS) {
@@ -173,9 +178,12 @@ class CIUtility {
 
 dPrint(Object object, StackTrace stackTrace) {
   String line = "$object";
-  if(!kReleaseMode) {
-    print('${CustomTrace(stackTrace).fileName}(line: ${CustomTrace(stackTrace).lineNumber}) ' + line );
-  }  else {
+  if (CIUtility().isMobile) {
+    if(!kReleaseMode) {
+      print('${CustomTrace(stackTrace).fileName}(line: ${CustomTrace(stackTrace).lineNumber}) ' + line );
+    }
+  } else {
+  debugPrint("${object}");
   }
 }
 
