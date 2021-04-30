@@ -78,19 +78,23 @@ class _PhotoListView extends StatelessWidget {
       bloc: BlocProvider.of<PhotoListBloc>(context),
       builder: (BuildContext context, PhotoListStates state) {
         if (state is APIJsonPlaceHolderResponseSuccess) {
-          return GridView.builder(
-              itemCount: state.result.response?.length ?? 0,
-              controller: _controller,
-              padding: EdgeInsets.all(4),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                mainAxisSpacing: 4,
-                crossAxisCount: 4,
-                crossAxisSpacing: 4,
-                childAspectRatio: 1.0,
-              ),
-              itemBuilder: (context, int index) {
-                return _photoGridItem("${state.result.response?[index].thumbnailUrl}");
-              });
+          return LayoutBuilder(
+            builder: (context, constraints) {
+              return GridView.builder(
+                  itemCount: state.result.response?.length ?? 0,
+                  controller: _controller,
+                  padding: EdgeInsets.all(4),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    mainAxisSpacing: 4,
+                    crossAxisCount: constraints.maxWidth ~/ 120.0,
+                    crossAxisSpacing: 4,
+                    childAspectRatio: 1.0,
+                  ),
+                  itemBuilder: (context, int index) {
+                    return _photoGridItem("${state.result.response?[index].thumbnailUrl}");
+                  });
+            },
+          );
         } else if (state is APIJsonPlaceHolderLoading) {
           return buildLoadingWidget(title: "loading...");
         } else if (state is APIJsonPlaceHolderResponseFail) {
