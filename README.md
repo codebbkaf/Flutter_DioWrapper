@@ -26,3 +26,8 @@ PhotoListPage:
 ## 小工具
 dPrint: 使用 ci_utility 的 dPrint 方法並傳入 StackTrace.current 以顯示行數
 
+## For web
+
+to solve cross-origin issue using --web-renderer instead of CanvasKit renderer
+
+run $flutter run -d chrome --web-renderer html 
