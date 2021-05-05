@@ -22,6 +22,10 @@ class CIUtility {
     return Theme.of(context).platform == TargetPlatform.android;
   }
 
+  bool isWeb(BuildContext context) {
+    return Theme.of(context).platform != TargetPlatform.iOS && Theme.of(context).platform != TargetPlatform.android;
+  }
+
   bool isMobile = true;
   bool checkIsMobile(BuildContext context) {
     isMobile = (Theme.of(context).platform == TargetPlatform.android || Theme.of(context).platform == TargetPlatform.iOS);
