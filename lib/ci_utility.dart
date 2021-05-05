@@ -176,14 +176,14 @@ class CIUtility {
 
 }
 
-dPrint(Object object, StackTrace stackTrace) {
+dPrint(Object? object, StackTrace stackTrace) {
   String line = "$object";
   if (CIUtility().isMobile) {
     if(!kReleaseMode) {
       print('${CustomTrace(stackTrace).fileName}(line: ${CustomTrace(stackTrace).lineNumber}) ' + line );
     }
   } else {
-  debugPrint("${object}");
+  debugPrint("${object ?? "object is null"}");
   }
 }
 
