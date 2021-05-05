@@ -6,6 +6,7 @@ import 'package:flutter_app_bloc_dio/base_ui_component/show_coustom_alert.dart';
 import 'package:flutter_app_bloc_dio/ci_utility.dart';
 import 'package:flutter_app_bloc_dio/pages/photo_list/photo_list_states.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'photo_list_bloc.dart';
 
@@ -25,6 +26,7 @@ class _PhotoListState extends State<PhotoListPage> {
 
   @override
   Widget build(BuildContext context) {
+    dPrint(env['GOOGLE_DOCUMENT_API_KEY'], StackTrace.current);
     return MultiBlocProvider(
         providers: [BlocProvider(create: (BuildContext context) => _bloc)],
         child: _PhotoListView(widget: widget));
@@ -33,6 +35,7 @@ class _PhotoListState extends State<PhotoListPage> {
   @override
   void dispose() {
     _bloc.close();
+    dPrint("dispose", StackTrace.current);
     super.dispose();
   }
 }
