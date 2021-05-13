@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app_bloc_dio/pages/localize_list/localized_liat_page.dart';
 import 'package:flutter_app_bloc_dio/pages/menu_page/menu_page.dart';
 import 'package:flutter_app_bloc_dio/pages/photo_list/photo_list_page.dart';
+import 'package:flutter_app_bloc_dio/pages/product_list/product_list_page.dart';
 
 class PageTransManager {
   static final PageTransManager _pageTransManager =
@@ -27,6 +28,13 @@ class PageTransManager {
       return LocalizedListPage();
     }))
     );
+  }
+
+  pushToProductListPage(BuildContext context) {
+    Navigator.of(context)
+      .push(MaterialPageRoute(builder: (context){
+        return ProductListPage();
+      }));
   }
 
   pushReplacementToMenuPage(BuildContext context) {

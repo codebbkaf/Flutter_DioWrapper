@@ -1,43 +1,36 @@
-import 'dart:ffi';
-import 'dart:convert';
-
-List<APIJsonStoreResponseModel> apiJsonPlaceHolderResponseModelFromJson(String str) => List<APIJsonStoreResponseModel>.from(json.decode(str).map((x) => APIJsonStoreResponseModel.fromJson(x)));
-
-String apiJsonStoreResponseModelToJson(List<APIJsonStoreResponseModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
-
-class APIJsonStoreResponseModel {
+class StoreResponse {
   int? id;
   String? title;
-  Double? price;
+  double? price;
   String? description;
   String? category;
   String? image;
 
-  APIJsonStoreResponseModel({
-      this.id,
+  StoreResponse(
+      {this.id,
       this.title,
       this.price,
       this.description,
       this.category,
-      this.image
-  });
+      this.image});
 
-  factory APIJsonStoreResponseModel.fromJson(Map<String, dynamic> json) => APIJsonStoreResponseModel(
-    id: json["id"] ??= json["id"],
-    title: json["title"] ??= json["title"],
-    price: json["url"] ??= json["url"],
-    description: json["categrory"] ??= json["categrory"],
-    category: json["category"] ??= json["category"],
-    image: json["image"] ??= json["image"],
-  );
+  StoreResponse.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    title = json['title'];
+    price = json['price'];
+    description = json['description'];
+    category = json['category'];
+    image = json['image'];
+  }
 
-  Map<String, dynamic> toJson() => {
-    "id": id ??= id,
-    "title": title ??= title,
-    "price": price ??= price,
-    "description": description ??= description,
-    "category": category ??= category,
-    "image": category ??= category,
-  };
-
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['title'] = this.title;
+    data['price'] = this.price;
+    data['description'] = this.description;
+    data['category'] = this.category;
+    data['image'] = this.image;
+    return data;
+  }
 }

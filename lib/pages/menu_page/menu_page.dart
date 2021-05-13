@@ -44,6 +44,16 @@ class _MenuState extends State<MenuPage> {
                 child: Text("Localized list page"),
               ),
             ),
+          ),
+          Container(
+            child: MaterialButton(
+              onPressed: () {
+                PageTransManager().pushToProductListPage(context);
+              },
+              child: Center(
+                child: Text("Product list page")
+              ),
+            )
           )
         ],
       ),

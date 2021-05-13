@@ -1,8 +1,9 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_bloc_dio/ci_utility.dart';
-import 'package:flutter_app_bloc_dio/pages/product_list/product_list_bloc.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_app_bloc_dio/managers/api_service/json_store/api_json_store_provider.dart';
+import 'package:flutter_app_bloc_dio/managers/api_service/json_store/api_json_store_response_model.dart';
 
 class ProductListPage extends StatefulWidget {
   @override
@@ -10,47 +11,130 @@ class ProductListPage extends StatefulWidget {
 }
 
 class _ProductListState extends State<ProductListPage> {
-  final _bloc = ProductListBloc();
+  late Future<List<StoreResponse>> futureProduct;
 
   @override
   void initState() {
-    _bloc.onFetchProduct();
     super.initState();
+    futureProduct = APIJsonStoreProvider.fetchProduct();
   }
 
   @override
   void dispose() {
-    _bloc.close();
-    dPrint("dispose", StackTrace.current);
     super.dispose();
   }
 
-  noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
-}
-
-class ProductListView extends StatelessWidget {
-  final ProductListPage widget;
-  const ProductListView({Key? key, required this.widget}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("Product list page")),
-      body: _productGridView(context),
+    final title = 'Product List Page';
+
+    return MaterialApp(
+      title: title,
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+          appBar: AppBar(
+            title: Text(title),
+          ),
+          body: LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+            return FutureBuilder<dynamic>(
+              future: futureProduct,
+              builder: (BuildContext context, snapshot) {
+                print("snapshot");
+                print(snapshot.data);
+                if (constraints.maxWidth > 1000) {
+                  return _buildLargeContainer(snapshot);
+                } else if (constraints.maxWidth > 600) {
+                  return _buildWideContainer(snapshot);
+                } else {
+                  return _buildNormalContainer(snapshot);
+                }
+              },
+            );
+          })),
     );
   }
 
-  _productGridView(BuildContext context) {
-    var _controller = ScrollController();
-    _controller.addListener(() {
-      if (_controller.position.atEdge) {
-        if (_controller.position.pixels == 0) {
-          dPrint("You're at the top", StackTrace.current);
-        } else {
-          dPrint("You're at the bottom", StackTrace.current);
-          BlocProvider.of<ProductListBloc>(context).onFetchMoreProduct();
-        }
-      }
-    });
+  Widget _buildNormalContainer(snapshot) {
+    if (snapshot.hasData) {
+      return GridView.count(
+        crossAxisCount: 2,
+        padding: EdgeInsets.all(4.0),
+        childAspectRatio: 8.0 / 9.0,
+        children: List.generate(snapshot.data.length, (i) {
+          return Container(
+            padding: const EdgeInsets.all(16),
+            color: RandomColorModel().getColor(),
+            child: (Text(
+              snapshot.data![i].title,
+            )),
+          );
+        }),
+      );
+    } else if (snapshot.hasError) {
+      return Text("${snapshot.error}");
+    }
+    // By default, show a loading spinner.
+    return Center(
+      child: (CircularProgressIndicator()),
+    );
+  }
+
+  Widget _buildWideContainer(snapshot) {
+    if (snapshot.hasData) {
+      return GridView.count(
+        crossAxisCount: 4,
+        padding: EdgeInsets.all(4.0),
+        childAspectRatio: 8.0 / 9.0,
+        children: List.generate(snapshot.data.length, (i) {
+          return Container(
+            padding: const EdgeInsets.all(16),
+            color: RandomColorModel().getColor(),
+            child: (Text(
+              snapshot.data![i].title,
+            )),
+          );
+        }),
+      );
+    } else if (snapshot.hasError) {
+      return Text("${snapshot.error}");
+    }
+    // By default, show a loading spinner.
+    return Center(
+      child: (CircularProgressIndicator()),
+    );
+  }
+
+  Widget _buildLargeContainer(snapshot) {
+    if (snapshot.hasData) {
+      return GridView.count(
+        crossAxisCount: 6,
+        padding: EdgeInsets.all(4.0),
+        childAspectRatio: 8.0 / 9.0,
+        children: List.generate(snapshot.data.length, (i) {
+          return Container(
+            padding: const EdgeInsets.all(16),
+            color: RandomColorModel().getColor(),
+            child: (Text(
+              snapshot.data![i].title,
+            )),
+          );
+        }),
+      );
+    } else if (snapshot.hasError) {
+      return Text("${snapshot.error}");
+    }
+    // By default, show a loading spinner.
+    return Center(
+      child: (CircularProgressIndicator()),
+    );
+  }
+}
+
+class RandomColorModel {
+  Random random = Random();
+  Color getColor() {
+    return Color.fromARGB(random.nextInt(300), random.nextInt(300),
+        random.nextInt(300), random.nextInt(300));
   }
 }
