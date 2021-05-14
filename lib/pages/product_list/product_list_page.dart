@@ -63,10 +63,45 @@ class _ProductListState extends State<ProductListPage> {
         childAspectRatio: 8.0 / 9.0,
         children: List.generate(snapshot.data.length, (i) {
           return Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(4),
             color: RandomColorModel().getColor(),
-            child: (Text(
-              snapshot.data![i].title,
+            child: (Column(
+              children: [
+                Container(
+                  child: Image.network(
+                    snapshot.data![i].image,
+                    width: MediaQuery.of(context).size.width,
+                    height: 180.0,
+                    fit: BoxFit.fitHeight,
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(top: 4),
+                  child: Text(
+                    snapshot.data![i].title,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 14.0),
+                  ),
+                ),
+                Container(
+                    child: (Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(snapshot.data![i].category),
+                    Text('\$ ${snapshot.data![i].price.toString()}'),
+                  ],
+                ))),
+                Container(
+                  margin: const EdgeInsets.only(top: 1),
+                  child: Text(
+                    snapshot.data![i].description,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
             )),
           );
         }),
